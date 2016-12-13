@@ -1,0 +1,47 @@
+---
+application_env: "dev"
+#
+dev:
+  vagrant_build_log: "/vagrant/provision/vagrant_build.log"
+  host: "localhost"
+  nginx_conf: "/vagrant/provision/nginx/vhost-dev"
+  php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
+  db_host: "localhost"
+  db_root_password: "root"
+  db_name: "dbname"
+  db_user: "dbuser"
+  db_password: "password"
+#
+test:
+  host: "test.vhost"
+  nginx_conf: "/vagrant/provision/nginx/vhost-dev"
+  php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
+  db_host: "localhost"
+  db_root_password: "root"
+  db_name: "dbname"
+  db_user: "dbuser"
+  db_password: "password"
+#
+cert:
+  host: "cert.vhost"
+  nginx_conf: "/vagrant/provision/nginx/vhost-prod"
+  php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
+  db_host: "localhost"
+  db_root_password: "root"
+  db_name: "dbname"
+  db_user: "dbuser"
+  db_password: "password"
+#
+prod:
+  host: "prod.vhost"
+  nginx_conf: "/vagrant/provision/nginx/vhost-prod"
+  php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
+  db_host: "localhost"
+  db_root_password: "root"
+  db_name: "dbname"
+  db_user: "dbuser"
+  db_password: "password"

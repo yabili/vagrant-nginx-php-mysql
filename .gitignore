@@ -1,0 +1,6 @@
+.idea/
+.settings/
+.vagrant/
+provision/vagrant_build.log
+php-app/vendor/
+get-pip.py
