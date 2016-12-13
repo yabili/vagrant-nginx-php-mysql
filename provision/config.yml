@@ -1,45 +1,74 @@
 ---
 application_env: "dev"
-#
+# Development Env
 dev:
-  vagrant_build_log: "/vagrant/provision/vagrant_build.log"
   host: "localhost"
-  nginx_conf: "/vagrant/provision/nginx/vhost-dev"
+  port: 8080
+  # NGINX
+  nginx_conf: "/vagrant/provision/nginx/nginx-dev.conf"
+  nginx_log_dir: "/vagrant/logs/"
+  vhost_conf: "/vagrant/provision/nginx/vhost-dev"
+  # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_log_dir: "/vagrant/logs/"
   php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
+  # DB
   db_host: "localhost"
   db_root_password: "root"
   db_name: "dbname"
   db_user: "dbuser"
   db_password: "password"
-#
+  # VAGRANT
+  vagrant_build_log: "/vagrant/provision/vagrant_build.log"
+# Testing Env
 test:
   host: "test.vhost"
-  nginx_conf: "/vagrant/provision/nginx/vhost-dev"
+  port: 8080
+  # NGINX
+  nginx_conf: "/vagrant/provision/nginx/nginx-dev.conf"
+  nginx_log_dir: "/vagrant/logs"
+  vhost_conf: "/vagrant/provision/nginx/vhost-dev"
+  # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_error_log: "/vagrant/php-app/logs/php7.0-fpm_error-test.log"
   php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
+  # DB
   db_host: "localhost"
   db_root_password: "root"
   db_name: "dbname"
   db_user: "dbuser"
   db_password: "password"
-#
+# Certification Env
 cert:
   host: "cert.vhost"
-  nginx_conf: "/vagrant/provision/nginx/vhost-prod"
+  port: 8080
+  # NGINX
+  nginx_conf: "/vagrant/provision/nginx/nginx-prod.conf"
+  nginx_log_dir: "/vagrant/logs"
+  vhost_conf: "/vagrant/provision/nginx/vhost-prod"
+  # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_error_log: "/vagrant/php-app/logs/php7.0-fpm_error-cert.log"
   php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
+  # DB
   db_host: "localhost"
   db_root_password: "root"
   db_name: "dbname"
   db_user: "dbuser"
   db_password: "password"
-#
+# Production Env
 prod:
   host: "prod.vhost"
-  nginx_conf: "/vagrant/provision/nginx/vhost-prod"
+  port: 8080
+  # NGINX
+  nginx_conf: "/vagrant/provision/nginx/nginx-prod.conf"
+  nginx_log_dir: "/vagrant/logs"
+  vhost_conf: "/vagrant/provision/nginx/vhost-prod"
+  # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_error_log: "/vagrant/php-app/logs/php7.0-fpm_error-prod.log"
   php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
+  # DB
   db_host: "localhost"
   db_root_password: "root"
   db_name: "dbname"

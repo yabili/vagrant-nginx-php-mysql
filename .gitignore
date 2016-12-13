@@ -2,5 +2,6 @@
 .settings/
 .vagrant/
 provision/vagrant_build.log
+php-app/logs/
 php-app/vendor/
 get-pip.py

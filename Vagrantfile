@@ -11,8 +11,10 @@ require 'yaml'
 # Read YAML file with env configs
 config = YAML.load_file('provision/config.yml')
 application_env = config["application_env"]
-vagrant_build_log = config[application_env]["vagrant_build_log"]
+host = config[application_env]["host"]
+port = config[application_env]["port"]
 nginx_conf = config[application_env]["nginx_conf"]
+vhost_conf = config[application_env]["vhost_conf"]
 php_fpm_conf = config[application_env]["php_fpm_conf"]
 php_ini = config[application_env]["php_ini"]
 db_host = config[application_env]["db_host"]
@@ -20,6 +22,7 @@ db_root_password = config[application_env]["db_root_password"]
 db_name = config[application_env]["db_name"]
 db_user = config[application_env]["db_user"]
 db_password = config[application_env]["db_password"]
+vagrant_build_log = config[application_env]["vagrant_build_log"]
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -42,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8701
+  config.vm.network "forwarded_port", guest: 80, host: port
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -58,6 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  ##@todo config.vm.synced_folder "./php-app/logs", "/vagrant/logs", :owner => "www-data", :group => "www-data"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -88,15 +92,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.path = "provision/vagrant-setup.sh"
     s.env = {
         "APPLICATION_ENV" => application_env,
-        "VAGRANT_BUILD_LOG" => vagrant_build_log,
         "NGINX_CONF" => nginx_conf,
+        "VHOST_CONF" => vhost_conf,
         "PHP_FPM_CONF" => php_fpm_conf,
         "PHP_INI" => php_ini,
         "DB_HOST" => db_host,
         "DB_ROOT_PASSWORD" => db_root_password,
         "DB_NAME" => db_name,
         "DB_USER" => db_user,
-        "DB_PASSWORD" => db_password
+        "DB_PASSWORD" => db_password,
+        "VAGRANT_BUILD_LOG" => vagrant_build_log
     }
   end
 end

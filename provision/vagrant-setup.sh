@@ -56,16 +56,21 @@ sudo apt-get install -y php7.0-fpm php7.0-cli php7.0-common php-pear php7.0-intl
 php --version >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Configuring Nginx"
-sudo cp $NGINX_CONF /etc/nginx/sites-available/vhost >> $VAGRANT_BUILD_LOG 2>&1
+sudo cp $NGINX_CONF /etc/nginx/nginx.conf >> $VAGRANT_BUILD_LOG 2>&1
+sudo cp $VHOST_CONF /etc/nginx/sites-available/vhost >> $VAGRANT_BUILD_LOG 2>&1
 ln -s /etc/nginx/sites-available/vhost /etc/nginx/sites-enabled/
 sudo rm -rf /etc/nginx/sites-available/default
 sudo rm -rf /etc/nginx/sites-enabled/default
+
+# link nginx log folder @todo
+#ln -s /var/log/nginx/* /vagrant/logs/nginx/
 
 # link app root folder
 ln -s /vagrant/php-app/* /usr/share/nginx/html/
 
 echo "Configuring PHP"
 sudo cp $PHP_FPM_CONF /etc/php/7.0/fpm/php-fpm.conf >> $VAGRANT_BUILD_LOG 2>&1
+
 sudo cp $PHP_INI /etc/php/7.0/fpm/php.ini >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Restarting Nginx service"
