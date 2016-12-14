@@ -17,11 +17,11 @@ sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile
 
 # Remove no longer required packages
 echo "Removing no longer required packages"
-sudo apt-get autoremove -yf >> $VAGRANT_BUILD_LOG 2>&1
+sudo apt-get autoremove -yf > $VAGRANT_BUILD_LOG 2>&1
 
 # Install tools
 echo "Updating apt-get"
-sudo apt-get update -y > $VAGRANT_BUILD_LOG 2>&1
+sudo apt-get update -y >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Installing utilities (CURL, GIT, UNZIP)"
 sudo apt-get install -y curl git unzip >> $VAGRANT_BUILD_LOG 2>&1
