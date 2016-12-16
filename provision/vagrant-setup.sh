@@ -8,7 +8,7 @@
 #dpkg-reconfigure locales
 
 # Repair "==> default: stdin: is not a tty" message
-sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile
+sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile > $VAGRANT_BUILD_LOG 2>&1
 
 # In order to avoid the message
 # "==> default: dpkg-preconfigure: unable to re-open stdin: No such file or directory"
@@ -58,19 +58,20 @@ php --version >> $VAGRANT_BUILD_LOG 2>&1
 echo "Configuring Nginx"
 sudo cp $NGINX_CONF /etc/nginx/nginx.conf >> $VAGRANT_BUILD_LOG 2>&1
 sudo cp $VHOST_CONF /etc/nginx/sites-available/vhost >> $VAGRANT_BUILD_LOG 2>&1
-ln -s /etc/nginx/sites-available/vhost /etc/nginx/sites-enabled/
-sudo rm -rf /etc/nginx/sites-available/default
-sudo rm -rf /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/vhost /etc/nginx/sites-enabled/ >> $VAGRANT_BUILD_LOG 2>&1
+sudo rm -rf /etc/nginx/sites-available/default >> $VAGRANT_BUILD_LOG 2>&1
+sudo rm -rf /etc/nginx/sites-enabled/default >> $VAGRANT_BUILD_LOG 2>&1
 
 # link nginx log folder @todo
-#ln -s /var/log/nginx/* /vagrant/logs/nginx/
+#ln -s /var/log/nginx/* /vagrant/logs/nginx/ >> $VAGRANT_BUILD_LOG 2>&1
 
 # link app root folder
-ln -s /vagrant/php-app/* /usr/share/nginx/html/
+ln -s /vagrant/php-app/* /usr/share/nginx/html/ >> $VAGRANT_BUILD_LOG 2>&1
 
-echo "Configuring PHP"
+echo "Configuring PHP-FPM"
 sudo cp $PHP_FPM_CONF /etc/php/7.0/fpm/php-fpm.conf >> $VAGRANT_BUILD_LOG 2>&1
 
+echo "Configuring PHP"
 sudo cp $PHP_INI /etc/php/7.0/fpm/php.ini >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Restarting Nginx service"
@@ -81,8 +82,8 @@ sudo service php7.0-fpm restart >> $VAGRANT_BUILD_LOG 2>&1
 
 # Install MySQL 5.6
 echo "Installing MySQL 5.6"
-debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password password $DB_ROOT_PASSWORD"
-debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password_again password $DB_ROOT_PASSWORD"
+debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
+debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password_again password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
 sudo apt-get install -y mysql-server-5.6 >> $VAGRANT_BUILD_LOG 2>&1
 mysql --version >> $VAGRANT_BUILD_LOG 2>&1
 
@@ -93,7 +94,7 @@ then
     echo "CREATE DATABASE $DB_NAME" | mysql -uroot -p$DB_ROOT_PASSWORD >> $VAGRANT_BUILD_LOG 2>&1
     echo "GRANT ALL ON $DB_NAME.* TO '$DBUSER'@'$DB_HOST'" | mysql -uroot -p$DB_ROOT_PASSWORD >> $VAGRANT_BUILD_LOG 2>&1
     echo "flush privileges" | mysql -uroot -p$DB_ROOT_PASSWORD >> $VAGRANT_BUILD_LOG 2>&1
-    touch /var/log/dbinstalled
+    touch /var/log/dbinstalled >> $VAGRANT_BUILD_LOG 2>&1
     if [ -f /vagrant/provision/mysql/loadschema.sql ];
     then
         mysql -uroot -p$DB_ROOT_PASSWORD $DB_NAME < /vagrant/provision/mysql/loadschema.sql >> $VAGRANT_BUILD_LOG 2>&1
@@ -105,20 +106,20 @@ sudo service mysql restart >> $VAGRANT_BUILD_LOG 2>&1
 
 # Install Composer
 echo "Installing Composer"
-cd /usr/local/bin
+cd /usr/local/bin >> $VAGRANT_BUILD_LOG 2>&1
 if [ ! -f composer ];
 then
-    curl -sS https://getcomposer.org/installer | php
-    ln -s composer.phar composer
+    curl -sS https://getcomposer.org/installer | php >> $VAGRANT_BUILD_LOG 2>&1
+    ln -s composer.phar composer >> $VAGRANT_BUILD_LOG 2>&1
 fi
-chmod a+x composer.phar
+chmod a+x composer.phar >> $VAGRANT_BUILD_LOG 2>&1
 
 # Go to app root folder
-cd /vagrant/php-app
+cd /vagrant/php-app >> $VAGRANT_BUILD_LOG 2>&1
 
 # Launch Composer
 echo "Launching 'composer install'"
 if [[ -s /vagrant/php-app/composer.json ]];
 then
-  sudo -u vagrant -H sh -c "composer install"
+  sudo -u vagrant -H sh -c "composer install" >> $VAGRANT_BUILD_LOG 2>&1
 fi
