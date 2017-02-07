@@ -70,6 +70,7 @@ if [ ! -d "$APPLICATION_NAME" ]; then
 fi
 
 echo "Configuring PHP-FPM"
+sudo cp $PHP_FPM_WWW_CONF /etc/php/7.0/fpm/pool.d/www.conf >> $VAGRANT_BUILD_LOG 2>&1
 sudo cp $PHP_FPM_CONF /etc/php/7.0/fpm/php-fpm.conf >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Configuring PHP"

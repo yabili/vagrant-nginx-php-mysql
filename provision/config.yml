@@ -11,6 +11,7 @@ dev:
   vhost_conf: "/vagrant/provision/nginx/vhost-dev"
   # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_fpm_www_conf: "/vagrant/provision/php/7.0/www.conf"
   php_log_dir: "/vagrant/log/"
   php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
   # DB
@@ -31,6 +32,7 @@ test:
   vhost_conf: "/vagrant/provision/nginx/vhost-dev"
   # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_fpm_www_conf: "/vagrant/provision/php/7.0/www.conf"
   php_error_log: "/vagrant/php-app/log/php7.0-fpm_error-test.log"
   php_ini: "/vagrant/provision/php/7.0/php-dev.ini"
   # DB
@@ -49,6 +51,7 @@ cert:
   vhost_conf: "/vagrant/provision/nginx/vhost-prod"
   # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_fpm_www_conf: "/vagrant/provision/php/7.0/www.conf"
   php_error_log: "/vagrant/php-app/log/php7.0-fpm_error-cert.log"
   php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
   # DB
@@ -67,6 +70,7 @@ prod:
   vhost_conf: "/vagrant/provision/nginx/vhost-prod"
   # PHP
   php_fpm_conf: "/vagrant/provision/php/7.0/php-fpm.conf"
+  php_fpm_www_conf: "/vagrant/provision/php/7.0/www.conf"
   php_error_log: "/vagrant/php-app/log/php7.0-fpm_error-prod.log"
   php_ini: "/vagrant/provision/php/7.0/php-prod.ini"
   # DB

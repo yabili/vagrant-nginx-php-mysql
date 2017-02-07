@@ -1,6 +1,7 @@
 # TODO #
 
 * link php log file
+    /var/log/php7.0-fpm.log ?
 
 ==> default: tty: extra operand ‘mesg’
 

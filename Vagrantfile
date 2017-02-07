@@ -17,6 +17,7 @@ port = config[application_env]["port"]
 nginx_conf = config[application_env]["nginx_conf"]
 vhost_conf = config[application_env]["vhost_conf"]
 php_fpm_conf = config[application_env]["php_fpm_conf"]
+php_fpm_www_conf = config[application_env]["php_fpm_www_conf"]
 php_ini = config[application_env]["php_ini"]
 db_host = config[application_env]["db_host"]
 db_root_password = config[application_env]["db_root_password"]
@@ -99,6 +100,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         "NGINX_CONF" => nginx_conf,
         "VHOST_CONF" => vhost_conf,
         "PHP_FPM_CONF" => php_fpm_conf,
+        "PHP_FPM_WWW_CONF" => php_fpm_www_conf,
         "PHP_INI" => php_ini,
         "DB_HOST" => db_host,
         "DB_ROOT_PASSWORD" => db_root_password,
