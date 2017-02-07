@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: port
+  config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -61,7 +61,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "./php-app/logs", "/vagrant/logs"
+  config.vm.synced_folder "./log", "/vagrant/log"
+  config.vm.synced_folder "./php-app/log", "/vagrant/php-app/log"
   #, :owner => "www-data", :group => "www-data"
 
   # Provider-specific configuration so you can fine-tune various
@@ -90,7 +91,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell" do |s|
-    s.path = "provision/vagrant-setup.sh"
+    s.path = "provision/vagrant-provision.sh"
     s.env = {
         "APPLICATION_ENV" => application_env,
         "NGINX_CONF" => nginx_conf,

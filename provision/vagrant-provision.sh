@@ -15,11 +15,9 @@ sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile > $VAGRANT_BUI
 # use " > /dev/null 2>&1" in order to redirect stdout to /dev/null
 # For more info see http://stackoverflow.com/questions/10508843/what-is-dev-null-21
 
-# Remove no longer required packages
 echo "Removing no longer required packages"
 sudo apt-get autoremove -yf > $VAGRANT_BUILD_LOG 2>&1
 
-# Install tools
 echo "Updating apt-get"
 sudo apt-get update -y >> $VAGRANT_BUILD_LOG 2>&1
 
@@ -62,8 +60,8 @@ ln -s /etc/nginx/sites-available/vhost /etc/nginx/sites-enabled/ >> $VAGRANT_BUI
 sudo rm -rf /etc/nginx/sites-available/default >> $VAGRANT_BUILD_LOG 2>&1
 sudo rm -rf /etc/nginx/sites-enabled/default >> $VAGRANT_BUILD_LOG 2>&1
 
-# link nginx log folder @todo
-#ln -s /var/log/nginx/* /vagrant/logs/nginx/ >> $VAGRANT_BUILD_LOG 2>&1
+# link nginx log folder
+ln -s /var/log/nginx/* /vagrant/log/ >> $VAGRANT_BUILD_LOG 2>&1
 
 # link app root folder
 ln -s /vagrant/php-app/* /usr/share/nginx/html/ >> $VAGRANT_BUILD_LOG 2>&1
@@ -80,11 +78,10 @@ sudo service nginx restart >> $VAGRANT_BUILD_LOG 2>&1
 echo "Restarting PHP service"
 sudo service php7.0-fpm restart >> $VAGRANT_BUILD_LOG 2>&1
 
-# Install MySQL 5.6
-echo "Installing MySQL 5.6"
-debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
-debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password_again password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
-sudo apt-get install -y mysql-server-5.6 >> $VAGRANT_BUILD_LOG 2>&1
+echo "Installing MySQL 5.7"
+debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
+debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $DB_ROOT_PASSWORD" >> $VAGRANT_BUILD_LOG 2>&1
+sudo apt-get install -y mysql-server-5.7 >> $VAGRANT_BUILD_LOG 2>&1
 mysql --version >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Creating Database and User"
@@ -104,7 +101,6 @@ fi
 echo "Restarting MySQL service"
 sudo service mysql restart >> $VAGRANT_BUILD_LOG 2>&1
 
-# Install Composer
 echo "Installing Composer"
 cd /usr/local/bin >> $VAGRANT_BUILD_LOG 2>&1
 if [ ! -f composer ];
@@ -117,7 +113,6 @@ chmod a+x composer.phar >> $VAGRANT_BUILD_LOG 2>&1
 # Go to app root folder
 cd /vagrant/php-app >> $VAGRANT_BUILD_LOG 2>&1
 
-# Launch Composer
 echo "Launching 'composer install'"
 if [[ -s /vagrant/php-app/composer.json ]];
 then
