@@ -10,6 +10,7 @@ require 'yaml'
 
 # Read YAML file with env configs
 config = YAML.load_file('provision/config.yml')
+application_name = config["application_name"]
 application_env = config["application_env"]
 host = config[application_env]["host"]
 port = config[application_env]["port"]
@@ -45,7 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 80, host: port
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -93,6 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell" do |s|
     s.path = "provision/vagrant-provision.sh"
     s.env = {
+        "APPLICATION_NAME" => application_name,
         "APPLICATION_ENV" => application_env,
         "NGINX_CONF" => nginx_conf,
         "VHOST_CONF" => vhost_conf,

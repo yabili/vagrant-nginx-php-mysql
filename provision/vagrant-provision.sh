@@ -55,8 +55,8 @@ php --version >> $VAGRANT_BUILD_LOG 2>&1
 
 echo "Configuring Nginx"
 sudo cp $NGINX_CONF /etc/nginx/nginx.conf >> $VAGRANT_BUILD_LOG 2>&1
-sudo cp $VHOST_CONF /etc/nginx/sites-available/vhost >> $VAGRANT_BUILD_LOG 2>&1
-ln -s /etc/nginx/sites-available/vhost /etc/nginx/sites-enabled/ >> $VAGRANT_BUILD_LOG 2>&1
+sudo cp $VHOST_CONF /etc/nginx/sites-available/$APPLICATION_NAME >> $VAGRANT_BUILD_LOG 2>&1
+ln -s /etc/nginx/sites-available/$APPLICATION_NAME /etc/nginx/sites-enabled/ >> $VAGRANT_BUILD_LOG 2>&1
 sudo rm -rf /etc/nginx/sites-available/default >> $VAGRANT_BUILD_LOG 2>&1
 sudo rm -rf /etc/nginx/sites-enabled/default >> $VAGRANT_BUILD_LOG 2>&1
 
@@ -64,7 +64,10 @@ sudo rm -rf /etc/nginx/sites-enabled/default >> $VAGRANT_BUILD_LOG 2>&1
 ln -s /var/log/nginx/* /vagrant/log/ >> $VAGRANT_BUILD_LOG 2>&1
 
 # link app root folder
-ln -s /vagrant/php-app/* /usr/share/nginx/html/ >> $VAGRANT_BUILD_LOG 2>&1
+if [ ! -d "$APPLICATION_NAME" ]; then
+    sudo mkdir /var/www/$APPLICATION_NAME >> $VAGRANT_BUILD_LOG 2>&1
+    ln -s /vagrant/php-app/* /usr/share/nginx/html/ >> $VAGRANT_BUILD_LOG 2>&1
+fi
 
 echo "Configuring PHP-FPM"
 sudo cp $PHP_FPM_CONF /etc/php/7.0/fpm/php-fpm.conf >> $VAGRANT_BUILD_LOG 2>&1
