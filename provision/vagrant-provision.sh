@@ -66,7 +66,7 @@ ln -s /var/log/nginx/* /vagrant/log/ >> $VAGRANT_BUILD_LOG 2>&1
 # link app root folder
 if [ ! -d "$APPLICATION_NAME" ]; then
     sudo mkdir /var/www/$APPLICATION_NAME >> $VAGRANT_BUILD_LOG 2>&1
-    ln -s /vagrant/php-app/* /usr/share/nginx/html/ >> $VAGRANT_BUILD_LOG 2>&1
+    ln -s /vagrant/php-app/* /var/www/$APPLICATION_NAME/ >> $VAGRANT_BUILD_LOG 2>&1
 fi
 
 echo "Configuring PHP-FPM"
